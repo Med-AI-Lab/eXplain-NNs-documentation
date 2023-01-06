@@ -66,7 +66,7 @@
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="k">def</span> <span class="nf">ComputeBarcode</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a>                   <span class="n">hom_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>                   <span class="n">coefs_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    <span class="sd">&quot;&quot;&quot;The function plots barcodes.</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a>    <span class="sd">&quot;&quot;&quot;This function plots persistent homologies for a cloud of points as barcodes.</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="sd">    Args:</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="sd">        data (torch.Tensor): input data of shape NxC1x...xCk,</span>
@@ -86,26 +86,27 @@
 </span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>                      <span class="n">layers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>                      <span class="n">hom_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>                      <span class="n">coefs_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="sd">&quot;&quot;&quot;The function plots homology barcodes of latent representations on different levels</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">        of the neural network.</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a><span class="sd">    Args:</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">        model (torch.nn.Module): neural network</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        data (torch.Tensor): input data of shape NxC1x...xCk,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">            where N is the number of data points,</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">            C1,...,Ck are dimensions of each data point</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        layers (List[str]): list of layers for visualization. Defaults to None.</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">            If None, visualization for all layers is performed</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        hom_type (str): homotopy type</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        coefs_type (str): coefficients type</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">    Returns:</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">        Dict[str, matplotlib.figure.Figure]: dictionary with a barcode plot for each layer</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>        <span class="n">res</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">InnerNetspaceHomologies</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">hom_type</span><span class="p">,</span> <span class="n">coefs_type</span><span class="p">)</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>    <span class="k">return</span> <span class="n">res</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">    The function plots persistent homologies for latent representations</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="sd">        on different levels of the neural network as barcodes.</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="sd">    Args:</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="sd">        model (torch.nn.Module): neural network</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a><span class="sd">        data (torch.Tensor): input data of shape NxC1x...xCk,</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="sd">            where N is the number of data points,</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">            C1,...,Ck are dimensions of each data point</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        layers (List[str]): list of layers for visualization. Defaults to None.</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">            If None, visualization for all layers is performed</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">        hom_type (str): homotopy type</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">        coefs_type (str): coefficients type</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">    Returns:</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a><span class="sd">        Dict[str, matplotlib.figure.Figure]: dictionary with a barcode plot for each layer</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>        <span class="n">res</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">InnerNetspaceHomologies</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">hom_type</span><span class="p">,</span> <span class="n">coefs_type</span><span class="p">)</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>    <span class="k">return</span> <span class="n">res</span>
 </span></pre></div>
 
 
@@ -124,7 +125,7 @@
             <div class="pdoc-code codehilite"><pre><span></span><span id="ComputeBarcode-8"><a href="#ComputeBarcode-8"><span class="linenos"> 8</span></a><span class="k">def</span> <span class="nf">ComputeBarcode</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
 </span><span id="ComputeBarcode-9"><a href="#ComputeBarcode-9"><span class="linenos"> 9</span></a>                   <span class="n">hom_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="ComputeBarcode-10"><a href="#ComputeBarcode-10"><span class="linenos">10</span></a>                   <span class="n">coefs_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
-</span><span id="ComputeBarcode-11"><a href="#ComputeBarcode-11"><span class="linenos">11</span></a>    <span class="sd">&quot;&quot;&quot;The function plots barcodes.</span>
+</span><span id="ComputeBarcode-11"><a href="#ComputeBarcode-11"><span class="linenos">11</span></a>    <span class="sd">&quot;&quot;&quot;This function plots persistent homologies for a cloud of points as barcodes.</span>
 </span><span id="ComputeBarcode-12"><a href="#ComputeBarcode-12"><span class="linenos">12</span></a>
 </span><span id="ComputeBarcode-13"><a href="#ComputeBarcode-13"><span class="linenos">13</span></a><span class="sd">    Args:</span>
 </span><span id="ComputeBarcode-14"><a href="#ComputeBarcode-14"><span class="linenos">14</span></a><span class="sd">        data (torch.Tensor): input data of shape NxC1x...xCk,</span>
@@ -140,7 +141,7 @@
 </span></pre></div>
 
 
-            <div class="docstring"><p>The function plots barcodes.</p>
+            <div class="docstring"><p>This function plots persistent homologies for a cloud of points as barcodes.</p>
 
 <p>Args:
     data (torch.Tensor): input data of shape NxC1x...xCk,
@@ -171,31 +172,32 @@
 </span><span id="NetworkHomologies-28"><a href="#NetworkHomologies-28"><span class="linenos">28</span></a>                      <span class="n">layers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="NetworkHomologies-29"><a href="#NetworkHomologies-29"><span class="linenos">29</span></a>                      <span class="n">hom_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="NetworkHomologies-30"><a href="#NetworkHomologies-30"><span class="linenos">30</span></a>                      <span class="n">coefs_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">Figure</span><span class="p">]:</span>
-</span><span id="NetworkHomologies-31"><a href="#NetworkHomologies-31"><span class="linenos">31</span></a>    <span class="sd">&quot;&quot;&quot;The function plots homology barcodes of latent representations on different levels</span>
-</span><span id="NetworkHomologies-32"><a href="#NetworkHomologies-32"><span class="linenos">32</span></a><span class="sd">        of the neural network.</span>
-</span><span id="NetworkHomologies-33"><a href="#NetworkHomologies-33"><span class="linenos">33</span></a>
-</span><span id="NetworkHomologies-34"><a href="#NetworkHomologies-34"><span class="linenos">34</span></a><span class="sd">    Args:</span>
-</span><span id="NetworkHomologies-35"><a href="#NetworkHomologies-35"><span class="linenos">35</span></a><span class="sd">        model (torch.nn.Module): neural network</span>
-</span><span id="NetworkHomologies-36"><a href="#NetworkHomologies-36"><span class="linenos">36</span></a><span class="sd">        data (torch.Tensor): input data of shape NxC1x...xCk,</span>
-</span><span id="NetworkHomologies-37"><a href="#NetworkHomologies-37"><span class="linenos">37</span></a><span class="sd">            where N is the number of data points,</span>
-</span><span id="NetworkHomologies-38"><a href="#NetworkHomologies-38"><span class="linenos">38</span></a><span class="sd">            C1,...,Ck are dimensions of each data point</span>
-</span><span id="NetworkHomologies-39"><a href="#NetworkHomologies-39"><span class="linenos">39</span></a><span class="sd">        layers (List[str]): list of layers for visualization. Defaults to None.</span>
-</span><span id="NetworkHomologies-40"><a href="#NetworkHomologies-40"><span class="linenos">40</span></a><span class="sd">            If None, visualization for all layers is performed</span>
-</span><span id="NetworkHomologies-41"><a href="#NetworkHomologies-41"><span class="linenos">41</span></a><span class="sd">        hom_type (str): homotopy type</span>
-</span><span id="NetworkHomologies-42"><a href="#NetworkHomologies-42"><span class="linenos">42</span></a><span class="sd">        coefs_type (str): coefficients type</span>
-</span><span id="NetworkHomologies-43"><a href="#NetworkHomologies-43"><span class="linenos">43</span></a>
-</span><span id="NetworkHomologies-44"><a href="#NetworkHomologies-44"><span class="linenos">44</span></a><span class="sd">    Returns:</span>
-</span><span id="NetworkHomologies-45"><a href="#NetworkHomologies-45"><span class="linenos">45</span></a><span class="sd">        Dict[str, matplotlib.figure.Figure]: dictionary with a barcode plot for each layer</span>
-</span><span id="NetworkHomologies-46"><a href="#NetworkHomologies-46"><span class="linenos">46</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="NetworkHomologies-47"><a href="#NetworkHomologies-47"><span class="linenos">47</span></a>    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
-</span><span id="NetworkHomologies-48"><a href="#NetworkHomologies-48"><span class="linenos">48</span></a>    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
-</span><span id="NetworkHomologies-49"><a href="#NetworkHomologies-49"><span class="linenos">49</span></a>        <span class="n">res</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">InnerNetspaceHomologies</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">hom_type</span><span class="p">,</span> <span class="n">coefs_type</span><span class="p">)</span>
-</span><span id="NetworkHomologies-50"><a href="#NetworkHomologies-50"><span class="linenos">50</span></a>    <span class="k">return</span> <span class="n">res</span>
+</span><span id="NetworkHomologies-31"><a href="#NetworkHomologies-31"><span class="linenos">31</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="NetworkHomologies-32"><a href="#NetworkHomologies-32"><span class="linenos">32</span></a><span class="sd">    The function plots persistent homologies for latent representations</span>
+</span><span id="NetworkHomologies-33"><a href="#NetworkHomologies-33"><span class="linenos">33</span></a><span class="sd">        on different levels of the neural network as barcodes.</span>
+</span><span id="NetworkHomologies-34"><a href="#NetworkHomologies-34"><span class="linenos">34</span></a>
+</span><span id="NetworkHomologies-35"><a href="#NetworkHomologies-35"><span class="linenos">35</span></a><span class="sd">    Args:</span>
+</span><span id="NetworkHomologies-36"><a href="#NetworkHomologies-36"><span class="linenos">36</span></a><span class="sd">        model (torch.nn.Module): neural network</span>
+</span><span id="NetworkHomologies-37"><a href="#NetworkHomologies-37"><span class="linenos">37</span></a><span class="sd">        data (torch.Tensor): input data of shape NxC1x...xCk,</span>
+</span><span id="NetworkHomologies-38"><a href="#NetworkHomologies-38"><span class="linenos">38</span></a><span class="sd">            where N is the number of data points,</span>
+</span><span id="NetworkHomologies-39"><a href="#NetworkHomologies-39"><span class="linenos">39</span></a><span class="sd">            C1,...,Ck are dimensions of each data point</span>
+</span><span id="NetworkHomologies-40"><a href="#NetworkHomologies-40"><span class="linenos">40</span></a><span class="sd">        layers (List[str]): list of layers for visualization. Defaults to None.</span>
+</span><span id="NetworkHomologies-41"><a href="#NetworkHomologies-41"><span class="linenos">41</span></a><span class="sd">            If None, visualization for all layers is performed</span>
+</span><span id="NetworkHomologies-42"><a href="#NetworkHomologies-42"><span class="linenos">42</span></a><span class="sd">        hom_type (str): homotopy type</span>
+</span><span id="NetworkHomologies-43"><a href="#NetworkHomologies-43"><span class="linenos">43</span></a><span class="sd">        coefs_type (str): coefficients type</span>
+</span><span id="NetworkHomologies-44"><a href="#NetworkHomologies-44"><span class="linenos">44</span></a>
+</span><span id="NetworkHomologies-45"><a href="#NetworkHomologies-45"><span class="linenos">45</span></a><span class="sd">    Returns:</span>
+</span><span id="NetworkHomologies-46"><a href="#NetworkHomologies-46"><span class="linenos">46</span></a><span class="sd">        Dict[str, matplotlib.figure.Figure]: dictionary with a barcode plot for each layer</span>
+</span><span id="NetworkHomologies-47"><a href="#NetworkHomologies-47"><span class="linenos">47</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="NetworkHomologies-48"><a href="#NetworkHomologies-48"><span class="linenos">48</span></a>    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="NetworkHomologies-49"><a href="#NetworkHomologies-49"><span class="linenos">49</span></a>    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+</span><span id="NetworkHomologies-50"><a href="#NetworkHomologies-50"><span class="linenos">50</span></a>        <span class="n">res</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span> <span class="o">=</span> <span class="n">InnerNetspaceHomologies</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">layer</span><span class="p">,</span> <span class="n">hom_type</span><span class="p">,</span> <span class="n">coefs_type</span><span class="p">)</span>
+</span><span id="NetworkHomologies-51"><a href="#NetworkHomologies-51"><span class="linenos">51</span></a>    <span class="k">return</span> <span class="n">res</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>The function plots homology barcodes of latent representations on different levels
-    of the neural network.</p>
+            <div class="docstring"><p>The function plots persistent homologies for latent representations
+    on different levels of the neural network as barcodes.</p>
 
 <p>Args:
     model (torch.nn.Module): neural network
